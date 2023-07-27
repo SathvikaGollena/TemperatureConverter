@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Temperature Converter</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v6.0.0-beta1/css/all.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Josefin+Sans&display=swap');
+    body {
+      font-family: 'Josefin Sans', sans-serif;
+      background-color: #454545;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .converter {
+      background-color: #FFA559;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      font-size: 2rem;
+      font-weight: 600;
+      color: #333;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .input-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    input[type="number"] {
+      width: 100%;
+      max-width: 200px;
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      text-align: center;
+    }
+    .bold {
+      font-weight: bold;
+    }
+    select {
+      width: 100%;
+      max-width: 200px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    .result-container {
+      text-align: center;
+    }
+
+    .result {
+      font-size: 1.2rem;
+      color: #333;
+    }
+
+    .unit-icons {
+      margin-top: 10px;
+    }
+
+    .unit-icons i {
+      font-size: 1.2rem;
+      margin: 0 5px;
+      color: #777;
+    }
+
+    .unit-icons i.active {
+      color: #14FFEC;
+    }
+  </style>
+</head>
+<body>
+  <div class="converter">
+    <h1>Temperature Converter</h1>
+    <div class="input-container">
+      <input type="number" id="inputValue" placeholder="Enter temperature">
+      <select id="unitSelect">
+        <option value="celsius">Celsius (°C)</option>
+        <option value="fahrenheit">Fahrenheit (°F)</option>
+        <option value="kelvin">Kelvin (K)</option>
+      </select>
+    </div>
+    <div class="result-container">
+      <p class="result" id="convertedValue">Converted temperature will appear here</p>
+      <div class="unit-icons">
+        <i class="fas fa-thermometer-half active" data-unit="celsius"></i>
+        <i class="fas fa-thermometer-full" data-unit="fahrenheit"></i>
+        <i class="fas fa-thermometer-three-quarters" data-unit="kelvin"></i>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>
+  <script>
+    const inputElement = document.getElementById("inputValue");
+    const selectElement = document.getElementById("unitSelect");
+    const resultElement = document.getElementById("convertedValue");
+    const unitIcons = document.querySelectorAll(".unit-icons i");
+
+    function convertTemperature() {
+      const inputValue = parseFloat(inputElement.value);
+      const unit = selectElement.value;
+
+      if (!isNaN(inputValue)) {
+      if (unit === "celsius") {
+        resultElement.innerHTML = `<span class="bold">${inputValue} °C</span> is <span class="bold">${((inputValue * 9) / 5 + 32).toFixed(2)} °F </span> and <span class="bold">${(inputValue + 273.15).toFixed(2)} K</span>`;
+      } else if (unit === "fahrenheit") {
+        resultElement.innerHTML = `<span class="bold">${inputValue} °F </span> is <span class="bold"> ${(((inputValue - 32) * 5) / 9).toFixed(2)} °C </span>and <span class="bold">${(((inputValue - 32) * 5) / 9 + 273.15).toFixed(2)} K</span>`;
+      } else if (unit === "kelvin") {
+        resultElement.innerHTML = `<span class="bold">${inputValue} K</span> is <span class="bold">${(inputValue - 273.15).toFixed(2)} °C</span> and <span class="bold">${(((inputValue - 273.15) * 9) / 5 + 32).toFixed(2)} °F</span>`;
+      }
+
+        unitIcons.forEach(icon => icon.classList.remove("active"));
+        document.querySelector(`[data-unit="${unit}"]`).classList.add("active");
+      } else {
+        resultElement.textContent = "Please enter a valid number.";
+      }
+    }
+
+    inputElement.addEventListener("input", convertTemperature);
+    selectElement.addEventListener("change", convertTemperature);
+  </script>
+</body>
+</html>
